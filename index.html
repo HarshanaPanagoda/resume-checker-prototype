@@ -183,10 +183,10 @@
         </button>
         <nav>
           <ul id="nav-menu">
-            <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+            <li><a href="#"><i class="fas fa-home"></i> New Job</a></li>
+            <li><a href="#"><i class="fas fa-history"></i> Reports</a></li>
             <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-            <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Help Center </a></li>
           </ul>
         </nav>
       </div>
@@ -197,7 +197,7 @@
   <div class="filter-bar" id="filter-bar">
     <div class="container">
       <div class="filter-content">
-        <div class="filter-title">Filtered Candidates</div>
+        <div class="filter-title">Product Designer</div>
         <div class="status-indicators">
           <div class="status-indicator shortlisted"><i class="fas fa-check-circle"></i><span>Shortlisted:</span><span class="status-count">2</span></div>
           <div class="status-indicator hold"><i class="fas fa-pause-circle"></i><span>On Hold:</span><span class="status-count">1</span></div>
@@ -229,7 +229,7 @@
         <h2 class="card-title"><i class="fas fa-file-alt"></i> Job Description</h2>
         <div class="form-group">
           <label for="job-title">Job Title</label>
-          <input type="text" id="job-title" placeholder="e.g. Senior UX Designer" />
+          <input type="text" id="job-title" placeholder="e.g. Product Designer" />
         </div>
         <!-- Replaced selector with input field -->
         <div class="form-group">
@@ -250,7 +250,7 @@
         </div>
         <div class="form-group">
           <label for="skills">Required Skills (comma separated)</label>
-          <input type="text" id="skills" placeholder="e.g. JavaScript, React, Node.js" />
+          <input type="text" id="skills" placeholder="e.g. Figma, Adobe XD, Design System, etc" />
         </div>
         <div class="form-group">
           <label for="preferences">Additional Preferences</label>
@@ -512,6 +512,20 @@
     document.getElementById('view-resume-btn').addEventListener('click', () => {
       alert('Opening submitted resume (mock). Integrate with your storage to link the actual file.');
     });
+
+    // "New Job" nav link → reset flow
+document.querySelector('#nav-menu a').addEventListener('click', function (e) {
+  if (this.textContent.includes('New Job')) {
+    e.preventDefault(); // prevent default jump
+    step1Content.classList.remove('hidden');
+    step2Content.classList.add('hidden');
+    filterBar.classList.remove('show');
+    setHeaderHeightVar();
+    updateBodyPadding();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
+
   </script>
 </body>
 </html>
