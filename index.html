@@ -1,628 +1,517 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ResumeCheck Pro | HR Resume Analysis Tool</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #4f46e5;
-            --light: #f3f4f6;
-            --dark: #1f2937;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray: #9ca3af;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f8fafc;
-            color: var(--dark);
-            line-height: 1.6;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        header {
-            background: linear-gradient(120deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-        
-        .logo i {
-            font-size: 2rem;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
-        }
-        
-        nav a:hover {
-            opacity: 0.8;
-        }
-        
-        .main-content {
-            padding: 2rem 0;
-        }
-        
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        @media (min-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            .dashboard {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-        }
-        
-        .card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .upload-area {
-            border: 2px dashed var(--gray);
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            transition: border-color 0.3s;
-            cursor: pointer;
-        }
-        
-        .upload-area:hover {
-            border-color: var(--primary);
-        }
-        
-        .upload-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-        
-        .btn:hover {
-            background: var(--primary-dark);
-        }
-        
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-        
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--gray);
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-        
-        textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        .results {
-            margin-top: 2rem;
-        }
-        
-        .score-display {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(120deg, var(--primary), var(--secondary));
-            color: white;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-        
-        .score-value {
-            font-size: 4rem;
-            font-weight: 700;
-            line-height: 1;
-        }
-        
-        .score-label {
-            font-size: 1.2rem;
-            margin-top: 0.5rem;
-        }
-        
-        .parameter {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .parameter:last-child {
-            border-bottom: none;
-        }
-        
-        .parameter-name {
-            font-weight: 500;
-        }
-        
-        .parameter-score {
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        .progress-bar {
-            height: 8px;
-            background: #eee;
-            border-radius: 4px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 4px;
-        }
-        
-        .feedback-item {
-            padding: 1rem;
-            border-left: 4px solid var(--primary);
-            background: #f9fafb;
-            margin-bottom: 1rem;
-            border-radius: 0 4px 4px 0;
-        }
-        
-        .feedback-item.warning {
-            border-left-color: var(--warning);
-        }
-        
-        .feedback-item.success {
-            border-left-color: var(--success);
-        }
-        
-        .candidate-list {
-            margin-top: 2rem;
-        }
-        
-        .candidate-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .candidate-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .candidate-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-right: 1rem;
-        }
-        
-        .candidate-info {
-            flex: 1;
-        }
-        
-        .candidate-name {
-            font-weight: 600;
-        }
-        
-        .candidate-title {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        
-        .candidate-score {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-        
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-        
-        @media (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-        }
-        
-        .footer-section {
-            flex: 1;
-        }
-        
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #4b5563;
-        }
-        
-        /* Mobile Navigation */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            nav ul {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                right: 0;
-                background: var(--primary-dark);
-                width: 100%;
-                padding: 1rem;
-                z-index: 100;
-            }
-            
-            nav ul.show {
-                display: flex;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Checker | Smart Candidate Matching</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #4f46e5;
+      --light: #f3f4f6;
+      --dark: #1f2937;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gray: #9ca3af;
+      --card-radius: 12px;
+      --input-radius: 4px;
+      --btn-radius: 8px;
+      --header-height: 72px; /* will be updated via JS */
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f8fafc; color: var(--dark); line-height: 1.6; padding-top: calc(var(--header-height) + 12px); }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* Fixed Navigation */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: linear-gradient(120deg, var(--primary), var(--secondary));
+      color: #fff; padding: 12px 0; z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    }
+    .header-content { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.4rem; }
+    .logo i { font-size: 1.8rem; }
+    .tagline { font-size: .9rem; opacity: .9; margin-top: 2px; }
+    nav ul { display: flex; list-style: none; gap: 20px; }
+    nav a { color: white; text-decoration: none; font-weight: 500; transition: opacity .2s; }
+    nav a:hover { opacity: .85; }
+
+    /* Sticky Filter Bar (hidden on landing) */
+    .filter-bar { position: fixed; left: 0; right: 0; top: var(--header-height); background: #fff; padding: 12px 0; z-index: 999; box-shadow: 0 2px 6px rgba(0,0,0,.06); display: none; }
+    .filter-bar.show { display: block; }
+    .filter-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .filter-title { font-weight: 600; font-size: 1.05rem; color: var(--dark); }
+    .status-indicators { display: flex; gap: 10px; flex-wrap: wrap; }
+    .status-indicator { display: flex; align-items: center; gap: 8px; padding: .45rem .8rem; border-radius: 999px; font-size: .95rem; font-weight: 500; }
+    .status-indicator.shortlisted { background-color: rgba(16,185,129,.12); color: var(--success); }
+    .status-indicator.hold { background-color: rgba(245,158,11,.12); color: var(--warning); }
+    .status-indicator.rejected { background-color: rgba(239,68,68,.12); color: var(--danger); }
+    .status-count { font-weight: 700; }
+    .filter-options { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: #fff; padding: .8rem 1.1rem; border-radius: var(--btn-radius); border: none; cursor: pointer; font-weight: 600; transition: background .2s; height: 44px; }
+    .btn:hover { background: var(--primary-dark); }
+    .btn i { margin-right: 6px; }
+    .btn-block { width: 100%; }
+    .btn-success { background: var(--success); }
+    .btn-success:hover { background: #0da271; }
+    .btn-warning { background: var(--warning); }
+    .btn-warning:hover { background: #e58c09; }
+    .btn-danger { background: var(--danger); }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-outline { background: transparent; border: 1px solid var(--gray); color: var(--dark); }
+    .btn-outline:hover { background: var(--light); }
+
+    /* Main Content */
+    .main-content { padding: 1.2rem 0 2rem; }
+
+    /* Cards */
+    .card { background: #fff; border-radius: var(--card-radius); box-shadow: 0 4px 6px rgba(0,0,0,.05); padding: 1.2rem; margin-bottom: 1.1rem; }
+    .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: .9rem; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
+
+    /* Form */
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; margin-bottom: .45rem; font-weight: 600; }
+    input, textarea, select { width: 100%; padding: .8rem; border: 1px solid var(--gray); border-radius: var(--input-radius); font-size: 1rem; height: 44px; }
+    textarea { min-height: 150px; resize: vertical; height: auto; }
+
+    /* Upload Area */
+    .upload-area { border: 2px dashed var(--gray); border-radius: var(--input-radius); padding: 1.6rem; text-align: center; margin-bottom: 1rem; transition: border-color .2s; cursor: pointer; }
+    .upload-area:hover { border-color: var(--primary); }
+    .upload-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: .8rem; }
+
+    /* Dashboard */
+    .dashboard { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    @media (min-width: 992px) { .dashboard { grid-template-columns: 1fr 1fr; } }
+
+    /* Results */
+    .candidate-list { margin-top: .6rem; display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 768px) { .candidate-list { grid-template-columns: 1fr 1fr; } }
+    .candidate-item { display: flex; align-items: center; gap: 12px; padding: .9rem; border: 1px solid #eee; border-radius: 10px; cursor: pointer; transition: transform .2s, box-shadow .2s; background: #fff; }
+    .candidate-item:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,.08); }
+    .candidate-item.selected { border-color: var(--primary); background-color: rgba(37,99,235,.05); }
+    .candidate-info { flex: 1; }
+    .candidate-name { font-weight: 700; }
+    .candidate-title { color: var(--gray); font-size: .95rem; }
+    .candidate-actions { display: flex; gap: 8px; }
+    .candidate-score { font-weight: 800; font-size: 1.15rem; color: var(--primary); }
+
+    /* Filters */
+    .filters { display: flex; gap: 10px; margin-bottom: .8rem; flex-wrap: wrap; }
+    .filter-btn { padding: .5rem 1rem; background: #fff; border: 1px solid var(--gray); border-radius: var(--btn-radius); cursor: pointer; }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* Modal */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 2000; padding: 16px; }
+    .modal.show { display: flex; align-items: center; justify-content: center; }
+    .modal-content { background: #fff; width: min(900px, 100%); border-radius: var(--card-radius); box-shadow: 0 10px 30px rgba(0,0,0,.15); overflow: hidden; }
+    .modal-header { padding: 1.1rem 1.2rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 1.2rem; max-height: 70vh; overflow-y: auto; }
+    .modal-footer { padding: 1.1rem 1.2rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+
+    /* Candidate Header in Modal */
+    .candidate-header { text-align: center; padding: 1.4rem 1rem; background: linear-gradient(120deg, var(--primary), var(--secondary)); color: #fff; }
+    .candidate-modal-name { font-size: 1.6rem; font-weight: 800; margin-bottom: .2rem; }
+    .candidate-modal-title { font-size: 1.05rem; opacity: .95; margin-bottom: .6rem; }
+    .candidate-modal-score { font-size: 2.2rem; font-weight: 900; }
+
+    /* Tabs */
+    .tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 1rem; overflow-x: auto; }
+    .tab { padding: .7rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; font-weight: 600; color: var(--gray); white-space: nowrap; }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Parameter Breakdown */
+    .parameter { display: flex; justify-content: space-between; gap: 10px; padding: .8rem 0; border-bottom: 1px solid #eee; }
+    .parameter:last-child { border-bottom: none; }
+    .parameter-name { font-weight: 600; }
+    .parameter-score { font-weight: 700; color: var(--primary); }
+    .progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-top: .4rem; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; width: 0; }
+
+    /* Feedback */
+    .feedback-item { padding: 1rem; border-left: 4px solid var(--primary); background: #f9fafb; margin-bottom: 1rem; border-radius: 0 6px 6px 0; }
+    .feedback-item.warning { border-left-color: var(--warning); }
+    .feedback-item.success { border-left-color: var(--success); }
+
+    .footer { text-align: center; margin-top: 3rem; padding: 1.2rem; color: var(--gray); font-size: .9rem; }
+
+    /* Utilities */
+    .hidden { display: none !important; }
+
+    /* Mobile adjustments */
+    .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn { display: block; }
+      nav ul { display: none; flex-direction: column; position: fixed; right: 0; left: 0; top: var(--header-height); background: var(--primary-dark); padding: 1rem; z-index: 1001; }
+      nav ul.show { display: flex; }
+
+      /* Make status indicators truly responsive */
+      .status-indicators { gap: 8px; }
+      .status-indicator { flex: 1 1 calc(50% - 8px); justify-content: center; }
+      .filter-content { align-items: stretch; }
+      .filter-options { width: 100%; }
+
+      /* Modal body height */
+      .modal-body { max-height: 65vh; }
+      .candidate-list { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-file-alt"></i>
-                    <span>ResumeCheck Pro</span>
-                </div>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <nav>
-                    <ul id="nav-menu">
-                        <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
-                        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
-                        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                        <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-                    </ul>
-                </nav>
-            </div>
+  <!-- Fixed Navigation -->
+  <header id="site-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-robot"></i>
+          <div>
+            <span>AI Resume Checker</span>
+            <div class="tagline">Smart Candidate Matching</div>
+          </div>
         </div>
-    </header>
+        <button class="mobile-menu-btn" aria-label="Open menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav>
+          <ul id="nav-menu">
+            <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
 
-    <main class="container main-content">
-        <h1>Resume Analysis Dashboard</h1>
-        <p>Upload candidate resumes and job description to analyze suitability</p>
-        
-        <div class="dashboard">
-            <div class="card">
-                <h2 class="card-title"><i class="fas fa-upload"></i> Upload Resume</h2>
-                <div class="upload-area">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <p>Drag & drop resume file here or click to browse</p>
-                    <p class="small">Supported formats: PDF, DOCX, TXT (Max: 5MB)</p>
-                </div>
-                <div class="form-group">
-                    <label for="candidate-name">Candidate Name</label>
-                    <input type="text" id="candidate-name" placeholder="Enter candidate name">
-                </div>
-                <div class="form-group">
-                    <label for="candidate-position">Applied Position</label>
-                    <input type="text" id="candidate-position" placeholder="Enter position">
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2 class="card-title"><i class="fas fa-file-alt"></i> Job Description</h2>
-                <div class="form-group">
-                    <label for="job-title">Job Title</label>
-                    <input type="text" id="job-title" placeholder="e.g. Senior UX Designer">
-                </div>
-                <div class="form-group">
-                    <label for="job-description">Job Description & Requirements</label>
-                    <textarea id="job-description" placeholder="Paste the job description here..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="required-skills">Key Skills Required (comma separated)</label>
-                    <input type="text" id="required-skills" placeholder="e.g. UI/UX, Figma, User Research">
-                </div>
-                <button class="btn btn-block">Analyze Resume</button>
-            </div>
-            
-            <div class="card">
-                <h2 class="card-title"><i class="fas fa-chart-line"></i> Analysis Results</h2>
-                <div class="score-display">
-                    <div class="score-value">78%</div>
-                    <div class="score-label">Match Score</div>
-                </div>
-                
-                <h3>Detailed Breakdown</h3>
-                <div class="parameter">
-                    <div class="parameter-name">Skills Match</div>
-                    <div class="parameter-score">82%</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 82%;"></div>
-                </div>
-                
-                <div class="parameter">
-                    <div class="parameter-name">Experience Relevance</div>
-                    <div class="parameter-score">75%</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 75%;"></div>
-                </div>
-                
-                <div class="parameter">
-                    <div class="parameter-name">Education</div>
-                    <div class="parameter-score">90%</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 90%;"></div>
-                </div>
-                
-                <div class="parameter">
-                    <div class="parameter-name">Certifications</div>
-                    <div class="parameter-score">60%</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 60%;"></div>
-                </div>
-            </div>
+  <!-- Sticky Filter Bar (hidden by default; only shows on results page) -->
+  <div class="filter-bar" id="filter-bar">
+    <div class="container">
+      <div class="filter-content">
+        <div class="filter-title">Filtered Candidates</div>
+        <div class="status-indicators">
+          <div class="status-indicator shortlisted"><i class="fas fa-check-circle"></i><span>Shortlisted:</span><span class="status-count">2</span></div>
+          <div class="status-indicator hold"><i class="fas fa-pause-circle"></i><span>On Hold:</span><span class="status-count">1</span></div>
+          <div class="status-indicator rejected"><i class="fas fa-times-circle"></i><span>Rejected:</span><span class="status-count">3</span></div>
         </div>
-        
-        <div class="card results">
-            <h2 class="card-title"><i class="fas fa-comments"></i> Feedback & Recommendations</h2>
-            
-            <div class="feedback-item success">
-                <h3>Strengths</h3>
-                <p>Candidate has strong experience in UX design with 5+ years at top tech companies. Education background perfectly matches requirements with a Master's in HCI.</p>
-            </div>
-            
-            <div class="feedback-item">
-                <h3>Areas for Consideration</h3>
-                <p>While candidate has Figma experience, they lack proficiency with Adobe XD which is listed as a preferred skill. Certification in UX design is not current.</p>
-            </div>
-            
-            <div class="feedback-item warning">
-                <h3>Missing Keywords</h3>
-                <p>Resume does not mention: "Design Thinking", "User Personas", "A/B Testing" which appear in the job description.</p>
-            </div>
-            
-            <div class="feedback-item">
-                <h3>Recommendation</h3>
-                <p>Candidate is a strong fit for the role. Recommend proceeding to interview stage with focus on assessing Adobe XD skills and current knowledge of UX certification standards.</p>
-            </div>
+        <div class="filter-options">
+          <button class="filter-btn active">Best Match</button>
+          <button class="filter-btn">Name A-Z</button>
+          <button class="filter-btn">Experience</button>
         </div>
-        
-        <div class="card candidate-list">
-            <h2 class="card-title"><i class="fas fa-users"></i> Recent Candidates</h2>
-            
-            <div class="candidate-item">
-                <div class="candidate-avatar">JD</div>
-                <div class="candidate-info">
-                    <div class="candidate-name">John Doe</div>
-                    <div class="candidate-title">Senior UX Designer</div>
-                </div>
-                <div class="candidate-score">78%</div>
-            </div>
-            
-            <div class="candidate-item">
-                <div class="candidate-avatar">AS</div>
-                <div class="candidate-info">
-                    <div class="candidate-name">Alice Smith</div>
-                    <div class="candidate-title">Product Designer</div>
-                </div>
-                <div class="candidate-score">92%</div>
-            </div>
-            
-            <div class="candidate-item">
-                <div class="candidate-avatar">RJ</div>
-                <div class="candidate-info">
-                    <div class="candidate-name">Robert Johnson</div>
-                    <div class="candidate-title">UI Engineer</div>
-                </div>
-                <div class="candidate-score">65%</div>
-            </div>
-        </div>
-    </main>
+      </div>
+    </div>
+  </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>About ResumeCheck Pro</h3>
-                    <p>An AI-powered resume analysis tool designed for HR professionals to streamline candidate evaluation and improve hiring efficiency.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    <p>Email: info@wisesoftlab.com</p>
-                    <p>Phone: +94 777 570 555</p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 ResumeCheck Pro. All rights reserved.</p>
-            </div>
+  <main class="container main-content">
+    <!-- Step 1: Upload and Job Description (Landing) -->
+    <div class="dashboard" id="step1-content">
+      <div class="card">
+        <h2 class="card-title"><i class="fas fa-upload"></i> Upload Resumes</h2>
+        <div class="upload-area" id="upload-area">
+          <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <p>Drag & drop resume files here or click to browse</p>
+          <p class="small">Supported formats: PDF, DOCX, TXT (Max: 5MB each)</p>
+          <p class="small">You can upload up to 100 resumes at once</p>
         </div>
-    </footer>
+      </div>
 
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            document.getElementById('nav-menu').classList.toggle('show');
-        });
-        
-        // Simulate analysis process
-        document.querySelector('.btn').addEventListener('click', function() {
-            const button = this;
-            const originalText = button.textContent;
-            
-            // Show loading state
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
-            button.disabled = true;
-            
-            // Simulate analysis delay
-            setTimeout(function() {
-                // Show success message
-                button.innerHTML = '<i class="fas fa-check"></i> Analysis Complete!';
-                button.style.background = 'var(--success)';
-                
-                // Reset button after delay
-                setTimeout(function() {
-                    button.textContent = originalText;
-                    button.disabled = false;
-                    button.style.background = '';
-                }, 2000);
-            }, 3000);
-        });
-        
-        // Simulate file upload
-        document.querySelector('.upload-area').addEventListener('click', function() {
-            this.innerHTML = `
-                <div class="upload-icon">
-                    <i class="fas fa-spinner fa-spin"></i>
-                </div>
-                <p>Uploading resume...</p>
-            `;
-            
-            setTimeout(function() {
-                document.querySelector('.upload-area').innerHTML = `
-                    <div class="upload-icon" style="color: var(--success);">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <p>Resume uploaded successfully!</p>
-                    <p class="small">John_Doe_Resume.pdf</p>
-                `;
-            }, 2000);
-        });
-    </script>
+      <div class="card">
+        <h2 class="card-title"><i class="fas fa-file-alt"></i> Job Description</h2>
+        <div class="form-group">
+          <label for="job-title">Job Title</label>
+          <input type="text" id="job-title" placeholder="e.g. Senior UX Designer" />
+        </div>
+        <!-- Replaced selector with input field -->
+        <div class="form-group">
+          <label for="job-type-input">Job Type</label>
+          <input type="text" id="job-type-input" placeholder="e.g. Full-time / Contract / Internship" />
+        </div>
+        <div class="form-group">
+          <label for="job-duties">Key Duties & Responsibilities</label>
+          <textarea id="job-duties" placeholder="Describe the main responsibilities of the role..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="education">Educational Requirements</label>
+          <input type="text" id="education" placeholder="e.g. Bachelor's in Computer Science" />
+        </div>
+        <div class="form-group">
+          <label for="experience">Years of Experience</label>
+          <input type="number" id="experience" placeholder="e.g. 5" />
+        </div>
+        <div class="form-group">
+          <label for="skills">Required Skills (comma separated)</label>
+          <input type="text" id="skills" placeholder="e.g. JavaScript, React, Node.js" />
+        </div>
+        <div class="form-group">
+          <label for="preferences">Additional Preferences</label>
+          <textarea id="preferences" placeholder="Any other requirements or preferences..."></textarea>
+        </div>
+        <button class="btn btn-block" id="search-candidates"><i class="fas fa-search"></i> Search Candidates</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Analysis Results (Filtered Candidates) -->
+    <div class="hidden" id="step2-content">
+      <div class="card">
+        <h2 class="card-title"><i class="fas fa-users"></i> Filtered Candidates</h2>
+        <div class="candidate-list">
+          <div class="candidate-item" data-candidate="1">
+            <div class="candidate-info">
+              <div class="candidate-name">John Doe</div>
+              <div class="candidate-title">Senior UX Designer</div>
+            </div>
+            <div class="candidate-actions">
+              <button class="btn btn-outline btn-sm view-resume" data-id="1"><i class="fas fa-file"></i> View Resume</button>
+              <div class="candidate-score">92%</div>
+            </div>
+          </div>
+          <div class="candidate-item" data-candidate="2">
+            <div class="candidate-info">
+              <div class="candidate-name">Alice Smith</div>
+              <div class="candidate-title">Product Designer</div>
+            </div>
+            <div class="candidate-actions">
+              <button class="btn btn-outline btn-sm view-resume" data-id="2"><i class="fas fa-file"></i> View Resume</button>
+              <div class="candidate-score">88%</div>
+            </div>
+          </div>
+          <div class="candidate-item" data-candidate="3">
+            <div class="candidate-info">
+              <div class="candidate-name">Robert Johnson</div>
+              <div class="candidate-title">UI Engineer</div>
+            </div>
+            <div class="candidate-actions">
+              <button class="btn btn-outline btn-sm view-resume" data-id="3"><i class="fas fa-file"></i> View Resume</button>
+              <div class="candidate-score">85%</div>
+            </div>
+          </div>
+          <div class="candidate-item" data-candidate="4">
+            <div class="candidate-info">
+              <div class="candidate-name">Maria Evans</div>
+              <div class="candidate-title">UX Researcher</div>
+            </div>
+            <div class="candidate-actions">
+              <button class="btn btn-outline btn-sm view-resume" data-id="4"><i class="fas fa-file"></i> View Resume</button>
+              <div class="candidate-score">82%</div>
+            </div>
+          </div>
+          <div class="candidate-item" data-candidate="5">
+            <div class="candidate-info">
+              <div class="candidate-name">David Parker</div>
+              <div class="candidate-title">Frontend Developer</div>
+            </div>
+            <div class="candidate-actions">
+              <button class="btn btn-outline btn-sm view-resume" data-id="5"><i class="fas fa-file"></i> View Resume</button>
+              <div class="candidate-score">78%</div>
+            </div>
+          </div>
+          <div class="candidate-item" data-candidate="6">
+            <div class="candidate-info">
+              <div class="candidate-name">Sarah Kim</div>
+              <div class="candidate-title">UI Designer</div>
+            </div>
+            <div class="candidate-actions">
+              <button class="btn btn-outline btn-sm view-resume" data-id="6"><i class="fas fa-file"></i> View Resume</button>
+              <div class="candidate-score">76%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Candidate Detail Modal (centered, no close button) -->
+  <div class="modal" id="candidate-modal" aria-modal="true" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="candidate-header">
+          <h2 class="candidate-modal-name" id="modal-name">John Doe</h2>
+          <div class="candidate-modal-title" id="modal-title">Senior UX Designer</div>
+          <div class="candidate-modal-score" id="modal-score">92%</div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="tabs">
+          <div class="tab active" data-tab="breakdown">Score Breakdown</div>
+          <div class="tab" data-tab="feedback">Feedback & Recommendations</div>
+        </div>
+        <div class="tab-content active" id="breakdown-tab">
+          <h3>Detailed Breakdown</h3>
+          <div class="parameter"><div class="parameter-name">Skills Match</div><div class="parameter-score" data-key="skills">95%</div></div>
+          <div class="progress-bar"><div class="progress-fill" data-key="skills"></div></div>
+          <div class="parameter"><div class="parameter-name">Experience Relevance</div><div class="parameter-score" data-key="experience">90%</div></div>
+          <div class="progress-bar"><div class="progress-fill" data-key="experience"></div></div>
+          <div class="parameter"><div class="parameter-name">Education</div><div class="parameter-score" data-key="education">100%</div></div>
+          <div class="progress-bar"><div class="progress-fill" data-key="education"></div></div>
+          <div class="parameter"><div class="parameter-name">Certifications</div><div class="parameter-score" data-key="certifications">85%</div></div>
+          <div class="progress-bar"><div class="progress-fill" data-key="certifications"></div></div>
+        </div>
+        <div class="tab-content" id="feedback-tab">
+          <div class="feedback-item success">
+            <h3>Strengths</h3>
+            <p>Candidate has strong experience in UX design with 5+ years at top tech companies. Education background perfectly matches requirements with a Master's in HCI.</p>
+          </div>
+          <div class="feedback-item">
+            <h3>Areas for Consideration</h3>
+            <p>While candidate has Figma experience, they lack proficiency with Adobe XD which is listed as a preferred skill. Certification in UX design is not current.</p>
+          </div>
+          <div class="feedback-item warning">
+            <h3>Missing Keywords</h3>
+            <p>Resume does not mention: "Design Thinking", "User Personas", "A/B Testing" which appear in the job description.</p>
+          </div>
+          <div class="feedback-item">
+            <h3>Recommendation</h3>
+            <p>Candidate is a strong fit for the role. Recommend proceeding to interview stage with focus on assessing Adobe XD skills and current knowledge of UX certification standards.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="view-resume-btn"><i class="fas fa-file"></i> View Submitted Resume</button>
+        <button class="btn btn-success"><i class="fas fa-check"></i> Shortlist</button>
+        <button class="btn btn-warning"><i class="fas fa-pause"></i> Hold</button>
+        <button class="btn btn-danger"><i class="fas fa-times"></i> Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer"><p>Developed by Wise Soft Lab @ 2023</p></div>
+
+  <script>
+    const header = document.getElementById('site-header');
+    const filterBar = document.getElementById('filter-bar');
+
+    function setHeaderHeightVar() {
+      const h = header.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--header-height', h + 'px');
+    }
+
+    function updateBodyPadding() {
+      const headerH = header.getBoundingClientRect().height;
+      const filterVisible = filterBar.classList.contains('show');
+      const filterH = filterVisible ? filterBar.getBoundingClientRect().height : 0;
+      document.body.style.paddingTop = (headerH + (filterVisible ? filterH + 12 : 12)) + 'px';
+    }
+
+    window.addEventListener('load', () => { setHeaderHeightVar(); updateBodyPadding(); });
+    window.addEventListener('resize', () => { setHeaderHeightVar(); updateBodyPadding(); });
+
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+      document.getElementById('nav-menu').classList.toggle('show');
+    });
+
+    // Step navigation
+    const step1Content = document.getElementById('step1-content');
+    const step2Content = document.getElementById('step2-content');
+    const searchBtn = document.getElementById('search-candidates');
+
+    searchBtn.addEventListener('click', function () {
+      const originalHTML = this.innerHTML;
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing Resumes...';
+      this.disabled = true;
+
+      setTimeout(() => {
+        // Show results page
+        step1Content.classList.add('hidden');
+        step2Content.classList.remove('hidden');
+        filterBar.classList.add('show'); // show sticky bar only on results
+        setHeaderHeightVar();
+        updateBodyPadding();
+
+        // Reset button
+        this.innerHTML = originalHTML;
+        this.disabled = false;
+      }, 1500);
+    });
+
+    // Simulate file upload
+    const uploadArea = document.getElementById('upload-area');
+    uploadArea.addEventListener('click', function () {
+      this.innerHTML = '<div class="upload-icon"><i class="fas fa-spinner fa-spin"></i></div><p>Uploading resumes...</p>';
+      setTimeout(() => {
+        uploadArea.innerHTML = '<div class="upload-icon" style="color: var(--success);"><i class="fas fa-check-circle"></i></div><p>24 resumes uploaded successfully!</p><p class="small">All files processed without errors</p>';
+      }, 1200);
+    });
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach((btn) => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Modal logic (centered, closes on outside click, no close button)
+    const modal = document.getElementById('candidate-modal');
+
+    // Open modal on candidate click
+    document.querySelectorAll('.candidate-item').forEach((item) => {
+      item.addEventListener('click', function () {
+        const id = this.getAttribute('data-candidate');
+        loadCandidateData(id);
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    // Close when clicking outside content
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+        this.classList.add('active');
+        const name = this.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content').forEach((tc) => tc.classList.remove('active'));
+        document.getElementById(name + '-tab').classList.add('active');
+      });
+    });
+
+    // Candidate data loader (avatar removed)
+    function loadCandidateData(id) {
+      const candidates = {
+        1: { name: 'John Doe', title: 'Senior UX Designer', score: '92%', skills: '95%', experience: '90%', education: '100%', certifications: '85%' },
+        2: { name: 'Alice Smith', title: 'Product Designer', score: '88%', skills: '90%', experience: '85%', education: '95%', certifications: '80%' },
+        3: { name: 'Robert Johnson', title: 'UI Engineer', score: '85%', skills: '88%', experience: '82%', education: '90%', certifications: '75%' },
+        4: { name: 'Maria Evans', title: 'UX Researcher', score: '82%', skills: '84%', experience: '78%', education: '92%', certifications: '70%' },
+        5: { name: 'David Parker', title: 'Frontend Developer', score: '78%', skills: '80%', experience: '76%', education: '86%', certifications: '68%' },
+        6: { name: 'Sarah Kim', title: 'UI Designer', score: '76%', skills: '77%', experience: '72%', education: '88%', certifications: '65%' }
+      };
+
+      const c = candidates[id] || candidates[1];
+      document.getElementById('modal-name').textContent = c.name;
+      document.getElementById('modal-title').textContent = c.title;
+      document.getElementById('modal-score').textContent = c.score;
+
+      // Update progress bars and numeric labels using data-key attributes for robustness
+      ['skills', 'experience', 'education', 'certifications'].forEach((key) => {
+        const pf = document.querySelector('.progress-fill[data-key="' + key + '"]');
+        const ps = document.querySelector('.parameter-score[data-key="' + key + '"]');
+        if (pf) pf.style.width = c[key];
+        if (ps) ps.textContent = c[key];
+      });
+    }
+
+    // Mock: View resume button
+    document.getElementById('view-resume-btn').addEventListener('click', () => {
+      alert('Opening submitted resume (mock). Integrate with your storage to link the actual file.');
+    });
+  </script>
 </body>
 </html>
