@@ -6,7 +6,79 @@
   <title>Reports | AI Resume Checker</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    :root { --primary: #2563eb; --primary-dark: #1d4ed8; --secondary: #4f46e5; --light: #f3f4f6; --dark: #1f2937; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --gray: #9ca3af; --card-radius: 12px; --input-radius: 4px; --btn-radius: 8px; --header-height: 72px; /* will be updated via JS */ } * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; } body { background-color: #f8fafc; color: var(--dark); line-height: 1.6; padding-top: calc(var(--header-height) + 12px); } .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; } /* Fixed Navigation */ header { position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(120deg, var(--primary), var(--secondary)); color: #fff; padding: 12px 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,.12); } .header-content { display: flex; justify-content: space-between; align-items: center; gap: 12px; } .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.4rem; } .logo i { font-size: 1.8rem; } .tagline { font-size: .9rem; opacity: .9; margin-top: 2px; } nav ul { display: flex; list-style: none; gap: 20px; } nav a { color: white; text-decoration: none; font-weight: 500; transition: opacity .2s; } nav a:hover { opacity: .85; }
+    :root {
+      --primary: #2563eb;
+      --secondary: #4f46e5;
+      --light: #f3f4f6;
+      --dark: #1f2937;
+      --header-height: 72px;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f8fafc;
+      color: var(--dark);
+      line-height: 1.6;
+      padding-top: calc(var(--header-height) + 12px);
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Fixed Navigation */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(120deg, var(--primary), var(--secondary));
+      color: #fff;
+      padding: 12px 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+    .logo i {
+      font-size: 1.8rem;
+    }
+    .tagline {
+      font-size: .9rem;
+      opacity: .9;
+      margin-top: 2px;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity .2s;
+    }
+    nav a:hover {
+      opacity: .85;
+    }
 
     /* ========== MAIN CONTENT ========== */
     .main-content {
@@ -68,17 +140,27 @@
     }
 
     /* ========== RESPONSIVE ========== */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
     @media (max-width: 768px) {
       nav ul {
         display: none;
         flex-direction: column;
-        background: #fff;
+        background: linear-gradient(120deg, var(--primary), var(--secondary));
         position: absolute;
-        top: 60px;
-        right: 20px;
+        top: 100%;
+        left: 0;
+        width: 220px;
         padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 0 0 8px 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       }
       nav ul.show {
         display: flex;
@@ -90,7 +172,7 @@
   </style>
 </head>
 <body>
-  <!-- Same Header -->
+  <!-- Header -->
   <header id="site-header">
     <div class="container">
       <div class="header-content">
