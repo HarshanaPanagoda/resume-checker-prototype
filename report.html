@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports | AI Resume Checker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* ========== RESET & BASE STYLES ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f9fb;
+      color: #333;
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ========== HEADER ========== */
+    #site-header {
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .logo i {
+      font-size: 1.6rem;
+      margin-right: 8px;
+      color: #0077ff;
+    }
+    .logo .tagline {
+      font-size: 0.8rem;
+      font-weight: normal;
+      color: #666;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: #444;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover,
+    nav a.active {
+      color: #0077ff;
+    }
+    nav i {
+      margin-right: 5px;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      font-size: 1.4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+    }
+
+    /* ========== MAIN CONTENT ========== */
+    .main-content {
+      padding: 2rem 0;
+    }
+    .history-section h2 {
+      font-size: 1.6rem;
+      color: #2c3e50;
+      margin-bottom: 0.3rem;
+    }
+    .history-section p {
+      margin-bottom: 1.5rem;
+      color: #666;
+    }
+
+    .history-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+    .history-card {
+      background: #fff;
+      padding: 1.2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .history-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+    }
+    .history-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #0077ff;
+    }
+    .history-card p {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+    .history-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #666;
+      border-top: 1px solid #eee;
+      padding-top: 0.6rem;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #777;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      nav ul.show {
+        display: flex;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Same Header -->
+  <header id="site-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-file-alt"></i>
+          <div>
+            <span>AI Resume Checker</span>
+            <div class="tagline">Smart Candidate Matching</div>
+          </div>
+        </div>
+        <button class="mobile-menu-btn" aria-label="Open menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav>
+          <ul id="nav-menu">
+            <li><a href="index.html"><i class="fas fa-briefcase"></i> New Job</a></li>
+            <li><a href="report.html" class="active"><i class="fas fa-history"></i> Reports</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Reports Section -->
+  <main class="container main-content">
+    <div class="history-section">
+      <h2>Previous Job Analysis</h2>
+      <p>Review your past job matching analyses</p>
+      <div class="history-cards">
+        <div class="history-card">
+          <h3>Frontend Developer</h3>
+          <p>Analyzed 24 candidates for React-focused role</p>
+          <div class="history-meta">
+            <span>5 Shortlisted</span>
+            <span>Jun 15, 2023</span>
+          </div>
+        </div>
+        <div class="history-card">
+          <h3>Product Manager</h3>
+          <p>Analyzed 18 candidates for product leadership role</p>
+          <div class="history-meta">
+            <span>3 Shortlisted</span>
+            <span>May 28, 2023</span>
+          </div>
+        </div>
+        <div class="history-card">
+          <h3>Data Scientist</h3>
+          <p>Analyzed 32 candidates for machine learning position</p>
+          <div class="history-meta">
+            <span>7 Shortlisted</span>
+            <span>Apr 12, 2023</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="footer"><p>Developed by Wise Soft Lab @ 2025</p></div>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.querySelector(".mobile-menu-btn");
+    const navMenu = document.getElementById("nav-menu");
+    menuBtn.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
+    });
+  </script>
+</body>
+</html>
